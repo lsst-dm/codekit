@@ -242,7 +242,7 @@ jobs:
     needs: tests
     name: Upload release to PyPI
     if: startsWith(github.ref, 'refs/tags/')
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     permissions:
       id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
     environment:
