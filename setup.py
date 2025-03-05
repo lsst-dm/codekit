@@ -39,23 +39,23 @@ setup(
     use_scm_version=True,
     packages=find_packages(exclude=['docs', 'tests*']),
     install_requires=[
-        'MapGitConfig==1.1',
-        'progressbar2==3.37.1',
-        'public==1.0',
-        'pygithub==1.59',
-        'pyyaml>=5.1',
-        'requests>=2.8.1,<3.0.0',
+        'MapGitConfig',
+        'progressbar2',
+        'public',
+        'pygithub',
+        'pyyaml',
+        'requests',
     ],
     setup_requires=[
-        'pytest-runner>=4.4,<5',
+        'pytest-runner',
         'setuptools_scm',
     ],
     tests_require=[
         'flake8',
-        'pytest<5',
+        'pytest',
         # Removed due to incompatibility
         # 'pytest-flake8',
-        'responses>=0.9.0,<1',
+        'responses',
     ],
     # package_data={},
     entry_points={
