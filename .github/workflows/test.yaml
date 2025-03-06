@@ -35,7 +35,7 @@ jobs:
 
       - name: Install deps
         run: |
-         pip install --upgrade pip setuptools_scm 'setuptools==58'
+         pip install --upgrade pip setuptools_scm setuptools
          #if [ "${{ matrix.test }}" == "github-tag-release" ]; then
          python setup.py sdist
          pip install dist/sqre-codekit-*.tar.gz
