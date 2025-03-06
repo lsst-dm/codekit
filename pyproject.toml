@@ -1,0 +1,69 @@
+[build-system]
+requires = ["setuptools", "setuptools_scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sqre-codekit"
+requires-python = ">=3.11.0"
+description = "LSST Data Management SQuaRE code management tools"
+license = {text = "MIT"}
+readme = "README.md"
+authors = [
+    {name="Rubin Observatory Data Management", email="dm-admin@lists.lsst.org"},
+]
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Astronomy",
+]
+
+keywords = ["lsst"]
+
+dependencies = [
+   "MapGitConfig",
+   "progressbar2",
+   "public",
+   "pygithub",
+   "pyyaml",
+   "requests",
+]
+
+dynamic = ["version"] 
+
+[project.urls]
+"Homepage" = "https://github.com/lsst-sqre/sqre-codekit"
+
+[project.optional-dependencies]
+test = [
+    "pytest >= 3.2",
+    "flake8",
+]
+
+[tool.setuptools.packages.find]
+where = ["codekit"]
+
+[tool.setuptools]
+zip-safe = true
+license-files = ["COPYRIGHT", "LICENSE"]
+
+[tool.setuptools_scm]
+version_scheme = "post-release"
+local_scheme = "node-and-date"
+
+[project.scripts]
+github-auth = "codekit.cli.github_auth:main"
+github-decimate-org = "codekit.cli.github_decimate_org:main"
+github-fork-org = "codekit.cli.github_fork_org:main"
+github-get-ratelimit = "codekit.cli.github_get_ratelimit:main"
+github-list-repos = "codekit.cli.github_list_repos:main"
+github-mv-repos-to-team = "codekit.cli.github_mv_repos_to_team:main"
+github-tag-release = "codekit.cli.github_tag_release:main"
+github-tag-teams = "codekit.cli.github_tag_teams:main"
+
+[tool.pytest.ini_options]
+addopts = "--ignore=tests_integration"
