@@ -35,9 +35,9 @@ jobs:
 
       - name: Install deps
         run: |
-         pip install --upgrade pip setuptools_scm setuptools
+         pip install --upgrade pip build
          #if [ "${{ matrix.test }}" == "github-tag-release" ]; then
-         python setup.py sdist
+         python -m build --sdist
          pip install dist/sqre_codekit-*.tar.gz
             #fi
       - name: Run Tests
@@ -49,7 +49,7 @@ jobs:
           TEST=${{ matrix.test }}
           case "$TEST" in
             pytest)
-              python setup.py test
+              pytest
               ;;
 
             github-tag-release)
@@ -258,9 +258,9 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install setuptools wheel twine
+          python -m pip install setuptools wheel twine build
       - name: Build
         run: |
-          python setup.py sdist bdist_wheel
+          python -m build
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
