@@ -111,9 +111,9 @@ class ScmVersionAction(argparse.Action):
         self.version = version
 
     def __call__(self, parser, namespace, values, option_string=None):
-        version = version('sqre-codekit')
+        ver = version('sqre-codekit')
         formatter = parser._get_formatter()
-        formatter.add_text("%(prog)s {v}".format(v=version))
+        formatter.add_text("%(prog)s {v}".format(v=ver))
         parser._print_message(formatter.format_help(), sys.stdout)
         parser.exit()
 

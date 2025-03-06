@@ -225,7 +225,7 @@ def create_forks(
     fail_fast=False,
     dry_run=False
 ):
-    assert isinstance(dst_org, github.Organization.Organization),\
+    assert isinstance(dst_org, github.Organization.Organization), \
         type(dst_org)
     assert isinstance(src_repos, list), type(src_repos)
 
