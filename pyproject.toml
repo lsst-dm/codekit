@@ -31,6 +31,7 @@ dependencies = [
    "pygithub",
    "pyyaml",
    "requests",
+   "responses",
 ]
 
 dynamic = ["version"] 
@@ -45,7 +46,7 @@ test = [
 ]
 
 [tool.setuptools.packages.find]
-where = ["codekit"]
+where = ["."]
 
 [tool.setuptools]
 zip-safe = true

@@ -37,8 +37,7 @@ jobs:
         run: |
          pip install --upgrade pip build
          #if [ "${{ matrix.test }}" == "github-tag-release" ]; then
-         python -m build --sdist
-         pip install dist/sqre_codekit-*.tar.gz
+         pip install '.[test]'
             #fi
       - name: Run Tests
         env:
