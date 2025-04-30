@@ -5,10 +5,10 @@
 
 
 from datetime import datetime
-from pkg_resources import get_distribution
+from importlib.metadata import version
 from public import public
+import configparser
 import argparse
-import gitconfig
 import os
 import shutil
 import sys
@@ -111,9 +111,9 @@ class ScmVersionAction(argparse.Action):
         self.version = version
 
     def __call__(self, parser, namespace, values, option_string=None):
-        version = get_distribution('sqre-codekit').version
+        ver = version('sqre-codekit')
         formatter = parser._get_formatter()
-        formatter.add_text("%(prog)s {v}".format(v=version))
+        formatter.add_text("%(prog)s {v}".format(v=ver))
         parser._print_message(formatter.format_help(), sys.stdout)
         parser.exit()
 
@@ -229,8 +229,10 @@ def gitusername():
     Returns the user's name from .gitconfig if available
     """
     try:
-        mygitconfig = gitconfig.GitConfig()
-        return mygitconfig['user.name']
+        gitconfig_path = os.path.expanduser("~/.gitconfig")
+        mygitconfig = configparser.ConfigParser()
+        mygitconfig.read(gitconfig_path)
+        return mygitconfig.get("user", "name", fallback=None)
     except:
         return None
 
@@ -242,8 +244,10 @@ def gituseremail():
     """
 
     try:
-        mygitconfig = gitconfig.GitConfig()
-        return mygitconfig['user.email']
+        gitconfig_path = os.path.expanduser("~/.gitconfig")
+        mygitconfig = configparser.ConfigParser()
+        mygitconfig.read(gitconfig_path)
+        return mygitconfig.get("user", "email", fallback=None)
     except:
         return None
 

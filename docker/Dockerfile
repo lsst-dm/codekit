@@ -1,4 +1,4 @@
-FROM docker.io/python:3.8
+FROM docker.io/python:3.13
 
 ARG CODEKIT_VER=4.0.1
 

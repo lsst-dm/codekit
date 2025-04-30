@@ -15,12 +15,8 @@ jobs:
           - test: pytest
           - test: github-tag-release
           - test: github-tag-teams
-          - test: github-decimate-org
-          - test: github-fork-org
           - test: github-get-ratelimit
-          - test: github-auth
           - test: github-list-repos
-          - test: github-mv-repos-to-team
           - test: github-auth-debug
             env:
               DM_SQUARE_DEBUG: 'bogus_non_int_able_value'
@@ -31,24 +27,24 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: '3.13'
+
       - name: Install deps
         run: |
-         pip install --upgrade pip setuptools_scm 'setuptools==58'
+         pip install --upgrade pip build
          #if [ "${{ matrix.test }}" == "github-tag-release" ]; then
-         python setup.py sdist
-         pip install dist/sqre-codekit-*.tar.gz
+         pip install '.[test]'
             #fi
       - name: Run Tests
         env:
-          SQREADMIN_TOKEN: ${{ secrets.SQREADMIN_TOKEN }}
+          SQREADMIN_TOKEN: ${{ secrets.RUBINORG_MEMBER_READONLY }}
           DM_SQUARE_DEBUG: ${{ matrix.env.DM_SQUARE_DEBUG || '' }}
         run: |
           set -e
           TEST=${{ matrix.test }}
           case "$TEST" in
             pytest)
-              python setup.py test
+              pytest
               ;;
 
             github-tag-release)
@@ -73,8 +69,8 @@ jobs:
                   --token "$SQREADMIN_TOKEN" \
                   --ignore-git-tagger \
                   --ignore-git-message \
-                  --manifest 'b3595' \
-                  'w.2018.18'
+                  --manifest 'b7624' \
+                  'w.2025.15'
 
                 # verify a past official release where the git tag was generated from
                 # an rcX eups tag.  This validates the location of the git tags but
@@ -93,9 +89,9 @@ jobs:
                   --token "$SQREADMIN_TOKEN" \
                   --ignore-git-tagger \
                   --ignore-git-message \
-                  --eups-tag 'v15_0_rc3' \
-                  --manifest 'b3504' \
-                  '15.0'
+                  --eups-tag 'v28_0_2_rc1' \
+                  --manifest 'b7593' \
+                  '28.0.2'
 
                 # verify a past official release using the eups tag. As the eups
                 # product version strings will be out of sync between the versiondb
@@ -116,8 +112,8 @@ jobs:
                   --ignore-manifest-versions \
                   --ignore-git-tagger \
                   --ignore-git-message \
-                  --manifest 'b3504' \
-                  '15.0'
+                  --manifest 'b7593' \
+                  '28.0.2'
 
                 "$TEST" \
                   --dry-run \
@@ -134,9 +130,9 @@ jobs:
                   --ignore-manifest-versions \
                   --ignore-git-tagger \
                   --ignore-git-message \
-                  --manifest 'b3595' \
+                  --manifest 'b7624' \
                   --manifest-only \
-                  'w.2018.18'
+                  'w.2025.15'
               else
                 echo "Unable to test without secure env vars."
               fi
@@ -177,38 +173,13 @@ jobs:
              fi
               ;;
 
-            github-decimate-org)
+            github-list-repos)
               "$TEST" -h
               if [ -n "$SQREADMIN_TOKEN" ]; then
                 "$TEST" \
-                  --dry-run \
                   --debug \
-                  --org 'batmanuel-sandbox' \
-                  --token "$SQREADMIN_TOKEN" \
-                  --delete-repos \
-                  --delete-repos-limit 3 \
-                  --delete-teams \
-                  --delete-teams-limit 3
-              else
-                echo "Unable to test without travis secure env vars."
-              fi
-              ;;
-
-            github-fork-org)
-              # check argparse help formatting for errors
-              "$TEST" -h
-              if [ -n "$SQREADMIN_TOKEN" ]; then
-                "$TEST" \
-                  --dry-run \
-                  --debug \
-                  --src-org 'lsst' \
-                  --dst-org 'batmanuel-sandbox' \
-                  --token "$SQREADMIN_TOKEN" \
-                  --team 'DM Auxilliaries' \
-                  --team 'DM Externals' \
-                  --team 'Data Management' \
-                  --limit 10
-                  #--copy-teams
+                  --org 'lsst' \
+                  --token "$SQREADMIN_TOKEN"
               else
                 echo "Unable to test without travis secure env vars."
               fi
@@ -238,28 +209,3 @@ jobs:
               ;;
 
           esac
-  publish:
-    needs: tests
-    name: Upload release to PyPI
-    if: startsWith(github.ref, 'refs/tags/')
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
-    environment:
-      name: pypi
-      url: https://pypi.org/p/<your-pypi-project-name>
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python
-        uses: actions/setup-python@v3
-        with:
-          python-version: '3.6'
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install setuptools wheel twine
-      - name: Build
-        run: |
-          python setup.py sdist bdist_wheel
-      - name: Publish package distributions to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1

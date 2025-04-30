@@ -249,7 +249,7 @@ def get_teams_by_name(org, team_names):
     org: github.Organization.Organization
         org to search for team(s)
 
-    teams: list(str)
+    team_names: list(str)
         list of team names to search for
 
     Returns
@@ -289,7 +289,7 @@ def get_teams_by_name(org, team_names):
 
 
 @public
-def debug_ratelimit(g):
+def debug_ratelimit(org):
     """Log debug of github ratelimit information from last API call
 
     Parameters
@@ -297,9 +297,9 @@ def debug_ratelimit(g):
     org: github.MainClass.Github
         github object
     """
-    assert isinstance(g, github.MainClass.Github), type(g)
+    assert isinstance(org, github.MainClass.Github), type(org)
 
-    debug("github ratelimit: {rl}".format(rl=g.rate_limiting))
+    debug("github ratelimit: {rl}".format(rl=org.rate_limiting))
 
 
 @public
