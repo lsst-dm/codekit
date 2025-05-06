@@ -20,7 +20,7 @@ jobs:
           dockerfile: docker/Dockerfile
           build-args: |
            CODEKIT_REPO=${{ github.repository }}
-           CODEKIT_REF=${{ github.head_ref }}
+           CODEKIT_REF=${{ github.head_ref || 'main' }}
           platforms: linux/amd64,linux/arm64
           image: ${{ github.repository }}
           push: true
