@@ -1,6 +1,7 @@
 """
 pygithub based help functions for interacting with the github api.
 """
+from typing import List
 
 from codekit.codetools import debug
 from github import Github
@@ -383,3 +384,52 @@ def get_default_ref(repo):
         raise CaughtRepositoryError(repo, e, msg) from None
 
     return head
+
+
+@public
+def get_ref(repo: github.Repository, refs: List[str]):
+    """Return a `github.GitRef` object for for a ref list
+
+    Parameters
+    ----------
+    repo: github.Repository.Repository
+        repo to get default branch head ref from
+
+    refs: list of git references to evaluate
+
+    Returns
+    -------
+    ref : :class:`github.GitRef` instance or default branch
+
+    Raises
+    ------
+    github.RateLimitExceededException
+    codekit.pygithub.CaughtRepositoryError
+    """
+    assert isinstance(repo, github.Repository.Repository), type(repo)
+    assert isinstance(refs, List) \
+           and all(isinstance(r, str) for r in refs), \
+           f"refs must be List[str], got {type(refs)}"
+
+    branch = None
+    tag = None
+    for ref in refs:
+        try:
+            branch = repo.get_git_ref(f"heads/{ref}")
+            if branch is not None:
+                return branch
+        except github.RateLimitExceededException:
+            raise
+        except Exception:
+            pass
+        try:
+            tag = repo.get_git_ref(f"tags/{ref}")
+            if tag is not None:
+                return tag
+        except github.RateLimitExceededException:
+            raise
+        except Exception:
+            pass
+    msg = f"error getting refs: {refs}"
+    # should never be reached
+    raise CaughtRepositoryError(repo, Exception(), msg) from None
