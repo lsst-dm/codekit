@@ -50,7 +50,9 @@ def parse_args():
                     --user 'sqreadmin' \\
                     --email 'sqre-admin@lists.lsst.org' \\
                     --tag 'foo' \\
-                    --tag 'bar'
+                    --tag 'bar' \\
+                    --ref 'v999.0.x' \\
+                    --ref 'v999.0.0.rc1' \\
 
                 # *do not* fail if git tag already exists in any repo
                 {prog} \\
@@ -64,7 +66,9 @@ def parse_args():
                     --user 'sqreadmin' \\
                     --email 'sqre-admin@lists.lsst.org' \\
                     --ignore-existing-tag \\
-                    --tag 'v999.0.0.rc1'
+                    --tag 'v999.0.0.rc2'
+                    --ref 'v999.0.x' \\
+                    --ref 'v999.0.0.rc1'
 
 
             Note that the access token must have access to these oauth scopes:
@@ -118,7 +122,8 @@ def parse_args():
         default=codetools.debug_lvl_from_env(),
         help='Debug mode (can specify several times)')
     parser.add_argument('-v', '--version', action=codetools.ScmVersionAction)
-
+    parser.add_argument('-r', '--ref', default=None, action='append',
+                        help='Existing git ref to base new tag on.')
     delete_group = parser.add_mutually_exclusive_group()
     delete_group.add_argument(
         '--delete',
@@ -332,12 +337,15 @@ def tag_repos(absent_tags, **kwargs):
         create_tags(r, tags, **kwargs)
 
 
-def create_tags(repo, tags, tagger, dry_run=False):
+def create_tags(repo, tags, tagger, dry_run=False, ref_list=None):
     assert isinstance(repo, github.Repository.Repository), type(repo)
 
-    # tag the head of the designated "default branch"
+    # tag on existing reference(s) or the default repo branch
     # XXX this probably should be resolved via repos.yaml
-    head = pygithub.get_default_ref(repo)
+    refs = [repo.default_branch]
+    if ref_list is not None:
+        refs[:0] = ref_list
+    head = pygithub.get_ref(repo, refs)
 
     debug(textwrap.dedent("""\
         tagging repo: {repo} @
@@ -468,7 +476,8 @@ def run():
     if args.delete:
         untag_repos(present_tags, dry_run=args.dry_run)
     else:
-        tag_repos(absent_tags, tagger=tagger, dry_run=args.dry_run)
+        tag_repos(absent_tags, tagger=tagger,
+                  dry_run=args.dry_run, ref_list=args.ref)
 
 
 def main():
