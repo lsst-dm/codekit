@@ -142,9 +142,24 @@ jobs:
              "$TEST" -h
               if [ -n "$SQREADMIN_TOKEN" ]; then
               # check argparse help formatting for errors
-               # create
+               # create tag for release
                "$TEST" \
                  --debug \
+                 --dry-run \
+                 --ignore-existing-tag \
+                 --org 'lsst' \
+                 --allow-team 'DM Auxilliaries' \
+                 --deny-team 'DM Externals' \
+                 --token "$SQREADMIN_TOKEN" \
+                 --user 'sqreadmin' \
+                 --email 'sqre-admin@lists.lsst.org' \
+                 --tag 'v29.2.0.rc1' \
+                 -r 'v29.2.x' -r 'v29.1.1' -r '29.1.1' # refs may not all exist
+
+               # create tag for weekly
+               "$TEST" \
+                 --debug \
+                 --ignore-existing-tag \
                  --dry-run \
                  --org 'lsst' \
                  --allow-team 'DM Auxilliaries' \
@@ -152,8 +167,7 @@ jobs:
                  --token "$SQREADMIN_TOKEN" \
                  --user 'sqreadmin' \
                  --email 'sqre-admin@lists.lsst.org' \
-                 --tag 'foo' \
-                 --tag 'bar'
+                 --tag 'w.2025.32'
 
                # --delete
                "$TEST" \
