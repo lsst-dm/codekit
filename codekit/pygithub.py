@@ -416,7 +416,7 @@ def get_ref(repo: github.Repository, refs: List[str]):
     for ref in refs:
         try:
             branch = repo.get_git_ref(f"heads/{ref}")
-            if branch is not None:
+            if getattr(branch, "ref", None) is not None:
                 return branch
         except github.RateLimitExceededException:
             raise
@@ -424,7 +424,7 @@ def get_ref(repo: github.Repository, refs: List[str]):
             pass
         try:
             tag = repo.get_git_ref(f"tags/{ref}")
-            if tag is not None:
+            if getattr(tag, "ref", None) is not None:
                 return tag
         except github.RateLimitExceededException:
             raise
