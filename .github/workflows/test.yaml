@@ -67,7 +67,7 @@ jobs:
                   --allow-team 'DM Externals' \
                   --external-team 'DM Externals' \
                   --deny-team 'DM Auxilliaries' \
-                  --fail-fast --org lsst --manifest b7837 --eups-tag w_2025_33 w.2025.33
+                  --org lsst --manifest b7837 --eups-tag w_2025_33 w.2025.33
 
                 # verify a past official release where the git tag was generated from
                 # an rcX eups tag.  This validates the location of the git tags but
