@@ -56,21 +56,17 @@ jobs:
                 # verify a past weekly tag -- the eups tag name and git tag names are
                 # in sync except for s/_/-/
                 "$TEST" \
-                  --verify \
+                  --dry-run \
                   --debug \
                   --limit 10 \
-                  --org 'lsst' \
+                  --email sqre-admin@lists.lsst.org \
+                  --versiondb-base-url https://raw.githubusercontent.com/lsst/versiondb/main/manifests \
+                  --eupstag-base-url https://eups.lsst.codes/stack/src/tags \
                   --allow-team 'Data Management' \
                   --allow-team 'DM Externals' \
                   --external-team 'DM Externals' \
                   --deny-team 'DM Auxilliaries' \
-                  --email 'sqre-admin@lists.lsst.org' \
-                  --user 'sqreadmin' \
-                  --token "$SQREADMIN_TOKEN" \
-                  --ignore-git-tagger \
-                  --ignore-git-message \
-                  --manifest 'b7624' \
-                  'w.2025.15'
+                  --fail-fast --org lsst --manifest b7837 --eups-tag w_2025_33 w.2025.33
 
                 # verify a past official release where the git tag was generated from
                 # an rcX eups tag.  This validates the location of the git tags but
