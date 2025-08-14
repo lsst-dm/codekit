@@ -189,7 +189,7 @@ jobs:
               if [ -n "$SQREADMIN_TOKEN" ]; then
                 "$TEST" \
                   --debug \
-                  --org 'lsst' \
+                  --org 'lsst-dm' \
                   --token "$SQREADMIN_TOKEN"
               else
                 echo "Unable to test without travis secure env vars."
