@@ -59,6 +59,8 @@ jobs:
                   --dry-run \
                   --debug \
                   --limit 10 \
+                  --user sqreadmin \
+                  --token "$SQREADMIN_TOKEN" \
                   --email sqre-admin@lists.lsst.org \
                   --versiondb-base-url https://raw.githubusercontent.com/lsst/versiondb/main/manifests \
                   --eupstag-base-url https://eups.lsst.codes/stack/src/tags \
