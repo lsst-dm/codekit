@@ -58,7 +58,6 @@ jobs:
                 "$TEST" \
                   --dry-run \
                   --debug \
-                  --limit 10 \
                   --user sqreadmin \
                   --token "$SQREADMIN_TOKEN" \
                   --email sqre-admin@lists.lsst.org \
