@@ -7,7 +7,7 @@ import re
 import requests
 import textwrap
 
-default_pkgroot = 'https://eups.lsst.codes/stack/src'
+default_pkgroot = 'https://eups.lsst.cloud/stack/src'
 
 
 @public
@@ -34,7 +34,7 @@ class EupsTag(object):
     base_url: str
         Base url to the path for `tags` under an `EUPS_PKGROOT`. Optional.
 
-        Eg., `https://eups.lsst.codes/stack/src/tags`
+        Eg., `https://eups.lsst.cloud/stack/src/tags`
     """
 
     def __init__(self, name, base_url=None):

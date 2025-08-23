@@ -41,7 +41,7 @@ def test_v15_0(v15_0):
     responses.add(
         responses.Response(
             method='GET',
-            url='https://eups.lsst.codes/stack/src/tags/v15_0.list',
+            url='https://eups.lsst.cloud/stack/src/tags/v15_0.list',
             body=v15_0,
         ),
     )
@@ -66,7 +66,7 @@ def test_d_2018_05_08(d_2018_05_08):
     responses.add(
         responses.Response(
             method='GET',
-            url='https://eups.lsst.codes/stack/src/tags/d_2018_05_08.list',
+            url='https://eups.lsst.cloud/stack/src/tags/d_2018_05_08.list',
             body=d_2018_05_08,
         ),
     )
