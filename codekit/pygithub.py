@@ -329,7 +329,7 @@ def check_repo_teams(repo, allow_teams, deny_teams, team_names=None):
         Upon permission error
     """
     assert isinstance(repo, github.Repository.Repository), type(repo)
-
+    print("check_repo_teams: ", repo, allow_teams, deny_teams, team_names)
     # fetch team names if a list was not passed
     if not team_names:
         try:
